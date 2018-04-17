@@ -1,14 +1,15 @@
-package main
+package sorting
 
-import "fmt"
-
-func insertion_sort(input []int) []int {
+/*
+insertion sort:
+Worst case O(n**2) steps, O(n**2) comparisons
+*/
+func InsertionSort(input []int) []int {
     output := []int{}
 
     for i := 0; i < len(input); i++ {
         item := input[i] 
         output = insert(output, item)
-        fmt.Println("insertion_sort loop output: ", output)
     }
 
     return output
@@ -17,8 +18,6 @@ func insertion_sort(input []int) []int {
 func insert(input []int, item int) []int {
     input_length := len(input)
 
-    fmt.Println("input", input)
-    fmt.Println("item", item)
     if input_length == 0 {
         return []int{item}
     }
@@ -42,7 +41,6 @@ func insert(input []int, item int) []int {
     }
 
     for i := 0; i < input_length; i++ {
-        fmt.Println("input[",i,"] is:", input[i])
         if (item <= input[i]){          
             output = append(output, input[0:i]...)
             output = append(output, item)
@@ -56,11 +54,4 @@ func insert(input []int, item int) []int {
         }
     }
     return input
-}
-
-func main() {
-    input := []int{2,1,5,-1,3,4,99}
-    fmt.Println("Unsorted input ", input)
-    output := insertion_sort(input)
-    fmt.Println("Sorted output ", output)
 }
