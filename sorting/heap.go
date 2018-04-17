@@ -39,7 +39,7 @@ func (h *Heap) GetNode(index int) *HeapNode {
         return NIL_NODE
     }
     if index > h.Length() - 1{
-        return NewHeapNode(NIL_VALUE, NIL_VALUE)
+        return NIL_NODE
     }
     return NewHeapNode(index, h.Values[index])
 }

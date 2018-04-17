@@ -32,7 +32,6 @@ func TestHeapCreation(t *testing.T){
     }
 }
 
-
 type heapChildrenTestCases struct {
     tag       string
     heapSlice []int
@@ -112,6 +111,16 @@ func TestHeapInvariant (t *testing.T){
         {
             tag: "Case 5",
             heapSlice: []int{100, 19, 36, 17, 3, 25, 1, 2, 7},
+            valid: false,
+        },
+        {
+            tag: "Case 6",
+            heapSlice: []int{100, 19, 36, 17, 12, 25, 5, 9, 15, 6, 11, 13, 8, 1, 4},
+            valid: true,
+        },
+        {
+            tag: "Case 7",
+            heapSlice: []int{100, 19, 36, 17, 12, 25, 5, 9, 15, 6, 11, 13, 108, 1, 4},
             valid: false,
         },
     }
