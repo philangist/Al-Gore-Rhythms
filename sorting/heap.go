@@ -103,14 +103,20 @@ func (h *Heap)assertInvariant() error {
     return nil
 }
 
-func (h *Heap) SetValue(index, value int){
-    if index > h.Length() - 1{
+func (h *Heap) SetValue(index, value int) error {
+    if index > (h.Length() - 1){
         return fmt.Errorf(
             "Index %d is larger than heap size. Cannot set value %d",
             index,value,
         )
     }
     h.Values[index] = value
+    return nil
+}
+
+func (h *Heap) InsertValue(value int) error {
+    h.Values = append(h.Values, value)
+    return h.ReorderHeap()
 }
 
 func (h *Heap) ReorderHeap() error {

@@ -235,3 +235,20 @@ func TestPopHeapRoot(t *testing.T){
         }
     }
 }
+
+func TestHeapInsert(t *testing.T){
+    fmt.Println("Running TestHeapInsert...")
+    inputValues := []int{1, 2, 3, 7, 19, 25, 36, 17}
+    outputValues := []int{36, 25, 7, 19, 1, 3, 2, 17}
+
+    heap := NewHeap([]int{})
+    for _, inputValue := range inputValues {
+        heap.InsertValue(inputValue)
+    }
+    if (reflect.DeepEqual(heap.Values, outputValues) == false){
+        t.Errorf(
+            "Insertion of heap values did not generate expected order\nExpected Values: %v\nActual values:%v ",
+            outputValues, heap.Values,
+        )
+    }
+}
