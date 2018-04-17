@@ -1,7 +1,5 @@
 package sorting
 
-import "fmt"
-
 type insertionFunction func(input []int, item int) []int
 
 // Insertion sort: Worst case O(n**2) steps, O(n**2) comparisons
