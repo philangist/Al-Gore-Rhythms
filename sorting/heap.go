@@ -67,8 +67,11 @@ func (h *Heap) GetChildren(node *HeapNode) []*HeapNode {
 
 func (h *Heap)assertInvariant() error {
     index := 0
-    nodes := []*HeapNode{h.GetRootNode()}
+    if h.Length() == 0 {
+        return nil
+    }
 
+    nodes := []*HeapNode{h.GetRootNode()}
     for {
         node := nodes[index]
         children := h.GetChildren(node)
@@ -100,11 +103,36 @@ func (h *Heap)assertInvariant() error {
     return nil
 }
 
-func ReorderHeap(h * Heap){}
+func (h *Heap) SetValue(index, value int){
+    if index > h.Length() - 1{
+        return fmt.Errorf(
+            "Index %d is larger than heap size. Cannot set value %d",
+            index,value,
+        )
+    }
+    h.Values[index] = value
+}
 
-func (h *Heap) PopHeapRoot() *HeapNode {
+func (h *Heap) ReorderHeap() error {
+    for index := h.Length() - 1; index > 0; index-- {
+        node := h.GetNode(index)
+        parent := h.Parent(node)
+        if node.Value > parent.Value {
+            tmp := parent.Value
+            h.SetValue(parent.Index, node.Value)
+            h.SetValue(node.Index, tmp)
+        }
+    }
+    return h.assertInvariant()
+}
+
+func (h *Heap) PopHeapRoot() (*HeapNode, error) {
     heapRoot := h.GetRootNode()
-    h.Values = h.Values[1:]
-    ReorderHeap(h)
-    return heapRoot
+    if h.Length() == 0 {
+        h.Values = []int{}
+    }else{
+        h.Values = h.Values[1:]
+    }
+    err := h.ReorderHeap()
+    return heapRoot, err
 }

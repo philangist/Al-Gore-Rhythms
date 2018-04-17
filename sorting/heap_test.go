@@ -2,6 +2,7 @@ package sorting
 
 import (
     "fmt"
+    "reflect"
     "testing"
 )
 
@@ -123,6 +124,11 @@ func TestHeapInvariant (t *testing.T){
             heapSlice: []int{100, 19, 36, 17, 12, 25, 5, 9, 15, 6, 11, 13, 108, 1, 4},
             valid: false,
         },
+        {
+            tag: "Case 8",
+            heapSlice: []int{36, 19, 25, 7,17, 1, 2, 3},
+            valid: true,
+        },
     }
 
     for _, testCase := range testCases {
@@ -142,6 +148,90 @@ func TestHeapInvariant (t *testing.T){
         }
         if (err == nil) && testCase.valid == true {
             fmt.Println(testCase.tag, ": Heap invariant holds. Expected validation state(success) was met")
+        }
+    }
+}
+type heapPopRootTestCases struct {
+    tag string
+    initialHeap []int
+    reorderedHeap []int
+    heapRootValue int
+}
+
+func TestPopHeapRoot(t *testing.T){
+    fmt.Println("Running TestPopHeapRoot...")
+
+    testCases := []heapPopRootTestCases{
+        {
+            tag: "Case 1",
+            initialHeap: []int{100, 19, 36, 17, 12, 25, 5, 9, 15, 6, 11, 13, 8, 1, 4},
+            reorderedHeap: []int{36, 19, 25, 15, 17, 13, 9, 12, 6, 11, 8, 5, 1, 4},
+            heapRootValue: 100,
+        },
+        {
+            tag: "Case 32",
+            initialHeap: []int{87, 19, 36, 17, 3, 25, 1, 2, 7},
+            reorderedHeap: []int{36, 19, 25, 7, 17, 1, 2, 3},
+            heapRootValue: 87,
+        },
+        {
+            tag: "Case 3",
+            initialHeap: []int{5,4,3,2,1},
+            reorderedHeap: []int{4,3,2,1},
+            heapRootValue: 5,
+        },
+        {
+            tag: "Case 4",
+            initialHeap: []int{4,3,2,1},
+            reorderedHeap: []int{3,2,1},
+            heapRootValue: 4,
+        },
+        {
+            tag: "Case 5",
+            initialHeap: []int{3,2,1},
+            reorderedHeap: []int{2,1},
+            heapRootValue: 3,
+        },
+        {
+            tag: "Case 6",
+            initialHeap: []int{2,1},
+            reorderedHeap: []int{1},
+            heapRootValue: 2,
+        },
+        {
+            tag: "Case 7",
+            initialHeap: []int{1},
+            reorderedHeap: []int{},
+            heapRootValue: 1,
+        },
+        {
+            tag: "Case 8",
+            initialHeap: []int{},
+            reorderedHeap: []int{},
+            heapRootValue: NIL_VALUE,
+        },
+    }
+
+    for _, testCase := range testCases {
+        fmt.Println("Test pop root of heap: ", testCase.initialHeap)
+
+        heap := NewHeap(testCase.initialHeap)
+        heapRoot, err := heap.PopHeapRoot()
+
+        if (err != nil) {
+            t.Errorf("%s: Pop heap root failed. Received unexpected error '%s'", testCase.tag, err)
+        }
+        if (reflect.DeepEqual(heap.Values, testCase.reorderedHeap) == false){
+            t.Errorf(
+                "%s: Heap reorder failed.\nExpected values: %v\nReceived values:%v",
+                testCase.tag, testCase.reorderedHeap, heap.Values,
+            )
+        }
+        if (heapRoot.Value != NIL_VALUE && (heapRoot.Value != testCase.heapRootValue)){
+            t.Errorf(
+                "%s: returned heapRoot value is incorrect. Expected: %d Received: %d",
+                testCase.tag, testCase.heapRootValue, heapRoot.Value,
+            )
         }
     }
 }
