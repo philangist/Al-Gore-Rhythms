@@ -216,7 +216,7 @@ func TestPopHeapRoot(t *testing.T){
         fmt.Println("Test pop root of heap: ", testCase.initialHeap)
 
         heap := NewHeap(testCase.initialHeap)
-        heapRoot, err := heap.PopHeapRoot()
+        heapRoot, err := heap.PopRoot()
 
         if (err != nil) {
             t.Errorf("%s: Pop heap root failed. Received unexpected error '%s'", testCase.tag, err)

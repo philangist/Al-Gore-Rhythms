@@ -132,7 +132,7 @@ func (h *Heap) ReorderHeap() error {
     return h.assertInvariant()
 }
 
-func (h *Heap) PopHeapRoot() (*HeapNode, error) {
+func (h *Heap) PopRoot() (*HeapNode, error) {
     heapRoot := h.GetRootNode()
     if h.Length() == 0 {
         h.Values = []int{}
