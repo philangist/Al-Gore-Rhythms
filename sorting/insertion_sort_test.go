@@ -12,6 +12,7 @@ type insertionSortTestCases struct {
 }
 
 func TestLinearSearchInsertionSort(t *testing.T) {
+    fmt.Println("Running TestLinearSearchInsertionSort...")
     testCases := []insertionSortTestCases{
         {
             unsorted_input: []int{},
@@ -36,7 +37,7 @@ func TestLinearSearchInsertionSort(t *testing.T) {
     }
 
     for _, testCase := range testCases {
-        fmt.Println("Running InsertionSort with linearSearchInsert for... ", testCase.unsorted_input)
+        fmt.Println("Running with linearSearchInsert for: ", testCase.unsorted_input)
         observed_output := InsertionSort(testCase.unsorted_input, linearSearchInsert)
         if !reflect.DeepEqual(testCase.sorted_output, observed_output) {
             t.Errorf(
@@ -48,6 +49,7 @@ func TestLinearSearchInsertionSort(t *testing.T) {
 }
 
 func TestBinarySearchInsertionSort(t *testing.T) {
+    fmt.Println("Running TestBinarySearchInsertionSort...")
     testCases := []insertionSortTestCases{
         {
             unsorted_input: []int{},
@@ -72,7 +74,7 @@ func TestBinarySearchInsertionSort(t *testing.T) {
     }
 
     for _, testCase := range testCases {
-        fmt.Println("Running InsertionSort with binarySearchInsert for... ", testCase.unsorted_input)
+        fmt.Println("Running with binarySearchInsert for: ", testCase.unsorted_input)
         observed_output := InsertionSort(testCase.unsorted_input, binarySearchInsert)
         if !reflect.DeepEqual(testCase.sorted_output, observed_output) {
             t.Errorf(
