@@ -1,5 +1,6 @@
 package sorting
 
+// O(nlogn) running time
 func MergeSort(input []int) []int {
     inputLength := len(input)
     if inputLength <= 1 {
@@ -17,6 +18,7 @@ func MergeSort(input []int) []int {
     return Merge(leftSlice, rightSlice)
 }
 
+// O(n) running time
 func Merge(leftSlice []int, rightSlice []int) []int {
     if (leftSlice == nil && rightSlice == nil){
         return []int{}
@@ -25,7 +27,7 @@ func Merge(leftSlice []int, rightSlice []int) []int {
         return rightSlice
     }
     if rightSlice == nil {
-        return rightSlice
+        return leftSlice
     }
 
     leftIndex := 0

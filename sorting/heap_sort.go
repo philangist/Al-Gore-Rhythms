@@ -1,8 +1,7 @@
 package sorting
 
-// O(nlogn) read/write!
+// O(nlogn) running time
 func HeapSort(input []int) []int {
-    // heap sort
     heap := NewHeap(input)
     heap.ReorderHeap()
 
