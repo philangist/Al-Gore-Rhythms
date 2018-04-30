@@ -1,61 +1,61 @@
 package trees
 
 import (
-    "sort"
+	"sort"
 )
 
 func NewRootNode(value int) *Node {
-    return &Node{value, nil, nil, nil}
+	return &Node{value, nil, nil, nil}
 }
 
 func NewSearchTree(values []int) *Node {
-    if values == nil {
-        return nil
-    }
+	if values == nil {
+		return nil
+	}
 
-    sort.Slice(
-        values, func(i, j int) bool {
-            return values[i] < values[j]
-        },
-    )
+	sort.Slice(
+		values, func(i, j int) bool {
+			return values[i] < values[j]
+		},
+	)
 
-    return ConstructSearchTree(values)
+	return ConstructSearchTree(values)
 }
 
 func ConstructSearchTree(values []int) *Node {
-    if values == nil {
-        return nil
-    }
+	if values == nil {
+		return nil
+	}
 
-    if values == nil {
-        return nil
-    }
+	if values == nil {
+		return nil
+	}
 
-    lengthValues := len(values)
+	lengthValues := len(values)
 
-    if lengthValues == 1 {
-        return NewRootNode(values[0])
-    }
+	if lengthValues == 1 {
+		return NewRootNode(values[0])
+	}
 
-    pivotIndex := lengthValues / 2
-    pivotValue := values[pivotIndex]
-    pivotNode := NewRootNode(pivotValue)
+	pivotIndex := lengthValues / 2
+	pivotValue := values[pivotIndex]
+	pivotNode := NewRootNode(pivotValue)
 
-    var leftNode, rightNode *Node
+	var leftNode, rightNode *Node
 
-    leftValues := make([]int, pivotIndex)
-    copy(leftValues, values[:pivotIndex])
-    leftNode = ConstructSearchTree(leftValues)
+	leftValues := make([]int, pivotIndex)
+	copy(leftValues, values[:pivotIndex])
+	leftNode = ConstructSearchTree(leftValues)
 
-    if pivotIndex < lengthValues {
-        rightValues := make([]int, lengthValues - pivotIndex - 1)
-        copy(rightValues, values[pivotIndex + 1:])
-        rightNode = ConstructSearchTree(rightValues)
-    }
+	if pivotIndex < lengthValues {
+		rightValues := make([]int, lengthValues-pivotIndex-1)
+		copy(rightValues, values[pivotIndex+1:])
+		rightNode = ConstructSearchTree(rightValues)
+	}
 
-    pivotNode.AddChildren(leftNode,rightNode)
+	pivotNode.AddChildren(leftNode, rightNode)
 
-    return pivotNode
+	return pivotNode
 }
 
 /*func (n *Node) Insert(value int) error { return nil }
