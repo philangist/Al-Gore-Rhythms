@@ -26,7 +26,7 @@ func (h *HashTable) Hash(item Hashable) int {
 	return hashedIndex
 }
 
-func (h *HashTable) Add(item Hashable) {
+func (h *HashTable) Set(item Hashable) {
 	hashedIndex := h.Hash(item)
 	itemValue := item.Value()
 	bucket := h.Buckets[hashedIndex]
@@ -37,6 +37,29 @@ func (h *HashTable) Add(item Hashable) {
 		bucket.Add(itemValue)
 	}
 	h.Buckets[hashedIndex] = bucket
+}
+
+func (h *HashTable) Get(key int) (int, error) {
+	hashedIndex := h.HashFunction(key, h.Capacity)
+	bucket := h.Buckets[hashedIndex]
+	if bucket == nil {
+		return 0, fmt.Errorf("Key %d not set", key)
+	}
+
+	var value int
+
+	for {
+		if bucket.Value == key {
+			value = bucket.Value
+		}
+		if bucket.Next != nil {
+			bucket = bucket.Next
+		} else {
+			break
+		}
+	}
+
+	return value, nil
 }
 
 func (h *HashTable) ItemDistribution() ([]int, int) {
@@ -85,6 +108,7 @@ func MultiplicativeHash(value, capacity int) int {
 }
 
 type Node struct {
+	// Key int
 	Value int
 	Next  *Node
 }
