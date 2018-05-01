@@ -1,6 +1,9 @@
 package hashing
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Hashable interface {
 	Key() int
@@ -18,9 +21,22 @@ func NewHashTable(capacity int) *HashTable {
 	return &HashTable{capacity, buckets, ModuloHash}
 }
 
-func (h *HashTable) Hash(value int) int {
-	hashedIndex := h.HashFunction(value, h.Capacity)
+func (h *HashTable) Hash(item Hashable) int {
+	hashedIndex := h.HashFunction(item.Key(), h.Capacity)
 	return hashedIndex
+}
+
+func (h *HashTable) Add(item Hashable) {
+	hashedIndex := h.Hash(item)
+	itemValue := item.Value()
+	bucket := h.Buckets[hashedIndex]
+
+	if bucket == nil {
+		bucket = NewNode(itemValue)
+	} else {
+		bucket.Add(itemValue)
+	}
+	h.Buckets[hashedIndex] = bucket
 }
 
 func (h *HashTable) ItemDistribution() ([]int, int) {
@@ -51,22 +67,21 @@ func (h *HashTable) LoadFactor() float32 {
 	return float32(totalItems) / float32(h.Capacity)
 }
 
-func (h *HashTable) Add(item Hashable) {
-	hashedIndex := h.Hash(item.Key())
-	itemValue := item.Value()
-	bucket := h.Buckets[hashedIndex]
-
-	if bucket == nil {
-		bucket = NewNode(itemValue)
-	} else {
-		bucket.Add(itemValue)
-	}
-	h.Buckets[hashedIndex] = bucket
+func ModuloHash(value, capacity int) int {
+	index := value % capacity
+	return index
 }
 
-func ModuloHash(value, base int) int {
-	index := value % base
-	return index
+func MultiplicativeHash(value, capacity int) int {
+	// Based on MIT OCW 6.006 lecture 8 - Hashing with Chaining
+	multiplicativeConstant := float64(1954392595985555827)
+	rightShiftFactor := int(math.Log2(float64(capacity)))
+
+	value = int(multiplicativeConstant * float64(value))
+	value = int(int64(value) % int64(math.Pow(2, 64)))
+	value = value >> uint(64 - rightShiftFactor)
+
+	return value
 }
 
 type Node struct {
